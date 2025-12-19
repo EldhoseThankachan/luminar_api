@@ -1,4 +1,6 @@
+import 'package:api_december_2025/models/User.dart';
 import 'package:api_december_2025/services/apiServices.dart';
+import 'package:api_december_2025/views/home_screen.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -39,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
               TextFormField(
                 controller: _passwordController,
                 decoration: const InputDecoration(labelText: 'Password'),
-                obscureText: true,
+                obscureText: false,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your password';
@@ -49,9 +51,37 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-                    // Perform login
+                    User? user = await apiServices.login(
+                      email: _emailController.text.trim(),
+                      password: _passwordController.text.trim(),
+                    );
+                    if (user != null) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) {
+                            return HomeScreen();
+                          },
+                        ),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          backgroundColor: Colors.lightGreen,
+                          content: Text("Login Successfull"),
+                        ),
+                      );
+                      _emailController.clear();
+                      _passwordController.clear();
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          backgroundColor: Colors.red,
+                          content: Text("Login Failed"),
+                        ),
+                      );
+                    }
                   }
                 },
                 child: const Text('Login'),
