@@ -1,5 +1,6 @@
 import 'package:api_december_2025/models/User.dart';
 import 'package:api_december_2025/services/apiServices.dart';
+import 'package:api_december_2025/services/userServices.dart';
 import 'package:api_december_2025/views/home_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -12,6 +13,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   ApiServices apiServices = ApiServices();
+
+  UserServices userServices = UserServices();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -38,6 +41,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   return null;
                 },
               ),
+
+              SizedBox(height: 8),
+
               TextFormField(
                 controller: _passwordController,
                 decoration: const InputDecoration(labelText: 'Password'),
@@ -49,7 +55,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   return null;
                 },
               ),
-              const SizedBox(height: 20),
+
+              SizedBox(height: 20),
+
               ElevatedButton(
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
@@ -58,13 +66,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       password: _passwordController.text.trim(),
                     );
                     if (user != null) {
-                      Navigator.push(
+                      // To save user data
+                      await userServices.savaUser(user);
+
+                      Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(
-                          builder: (BuildContext context) {
-                            return HomeScreen();
-                          },
-                        ),
+                        MaterialPageRoute(builder: (_) => HomeScreen()),
                       );
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(

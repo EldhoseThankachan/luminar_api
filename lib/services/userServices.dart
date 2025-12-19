@@ -9,8 +9,8 @@ class UserServices {
 
   Future<void> savaUser(User user) async {
     final pref = await SharedPreferences.getInstance();
-    pref.setString(userKey, userToJson(user));
-    logger.e("User Data Saved");
+    await pref.setString(userKey, userToJson(user));
+    logger.i("User Data Saved");
   }
 
   Future<User?> getUser() async {
@@ -25,11 +25,11 @@ class UserServices {
   Future<void> logout() async {
     final pref = await SharedPreferences.getInstance();
     pref.clear();
-    pref.remove(userKey);
+    await pref.remove(userKey);
   }
 
   Future<String?> getAccessKey() async {
     User? user = await getUser();
-    return user!.access;
+    return user?.access;
   }
 }
