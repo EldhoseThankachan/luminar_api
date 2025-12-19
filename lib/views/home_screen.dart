@@ -1,4 +1,5 @@
 import 'package:api_december_2025/services/apiServices.dart';
+import 'package:api_december_2025/services/userServices.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -11,6 +12,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   ApiServices apiServices = ApiServices();
 
+  UserServices userServices = UserServices();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             icon: const Icon(Icons.cancel),
             onPressed: () {
-              Navigator.pop(context);
+              userServices.logout();
             },
           ),
         ],
