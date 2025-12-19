@@ -74,4 +74,8 @@ class ApiServices {
       logger.e(e);
     }
   }
+
+  void getProducts(){
+
+  }
 }
